@@ -1,124 +1,75 @@
 package com.thomasswonger.week_10;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
-class File {
-    protected String location;
+class Contact implements Comparable<Contact> {
+    private String name;
+    private String email;
 
-    public File(String location) {
-        this.location = location;
+    public Contact(String name, String email) {
+        this.name = name;
+        this.email = email;
     }
 
-    public String getLocation() {
-        return location;
+    public String getName() {
+        return name;
     }
 
-    public byte[] read() {
-        // open file and read data
-        return null;
+    public String getEmail() {
+        return email;
     }
-}
 
-interface Displayable {
-    void display();
-}
+    public void display(){
+        System.out.println("Name: " + name + ", Email: " + email);
 
-interface Playable {
-    void play();
-}
-
-interface  Shareable {
-    void shareOnFacebook(String username, String password);
-    void shareOnTwitter(String username, String password);
-}
-
-class Picture extends File implements Displayable, Shareable{
-
-
-    public Picture(String location) {
-        super(location);
     }
 
     @Override
-    public void display() {
-        System.out.println("Display picture from: " + location);
-    }
-
-    @Override
-    public void shareOnFacebook(String username, String password) {
-        System.out.println("Sharing picture on facebook");
-    }
-
-    @Override
-    public void shareOnTwitter(String username, String password) {
-        System.out.println("Sharing picture on twitter");
-    }
-}
-
-class Song extends File implements Playable, Shareable {
-
-    public Song(String location) {
-        super(location);
-    }
-
-    @Override
-    public void play() {
-        System.out.println("Playing song from: " + location);
-    }
-
-    @Override
-    public void shareOnFacebook(String username, String password) {
-        System.out.println("Sharing song on facebook");
-    }
-
-    @Override
-    public void shareOnTwitter(String username, String password) {
-        System.out.println("Sharing song on twitter");
-    }
-}
-
-class Video extends File implements Playable, Shareable{
-
-    public Video(String location) {
-        super(location);
-    }
-
-    @Override
-    public void play() {
-        System.out.println("Playing video from: " + location);
-    }
-
-    @Override
-    public void shareOnFacebook(String username, String password) {
-        System.out.println("Sharing video on facebook");
-    }
-
-    @Override
-    public void shareOnTwitter(String username, String password) {
-        System.out.println("Sharing video on twitter");
-    }
-}
-
-class Playlist extends ArrayList<Playable> {
-    public void playAll(){
-        for(Playable item: this){
-            item.play();
+    public int compareTo(Contact otherContact) {
+        if (!this.name.equals(otherContact.name)) {
+            return this.name.compareTo(otherContact.name);
+        }
+        else{
+           return this.email.compareTo(otherContact.email);
         }
     }
-
 }
 
-public class Main {
+
+class ContactCollection implements Iterable<Contact> {
+    private List<Contact> contactList = new ArrayList<>();
+
+    public void add(Contact newContact){
+        contactList.add(newContact);
+    }
+
+    @Override
+    public Iterator<Contact> iterator() {
+        return contactList.iterator();
+    }
+}
+
+public class Main{
+
     public static void main(String[] args){
+        Contact bob = new Contact("Bob", "bob@bob.com");
+        Contact arthur = new Contact("Arthur" , "arthur1@cscc.edu");
+        Contact arthur2 = new Contact("ARthur", "aaa@a.edu");
 
-       Playlist myCoolPlaylist = new Playlist();
+       // List<Contact> contactList = new ArrayList<>();
+        ContactCollection contacts = new ContactCollection();
+        contacts.add(bob);
+        contacts.add(arthur);
+        contacts.add(arthur2);
+        
+        // Collections.sort(contactList);
 
-        Song aSong = new Song("C:/song.mp3");
-        Video aVideo = new Video("C:/video.avi");
+        for(Contact entry: contacts){
+            entry.display();
+        }
 
-        myCoolPlaylist.add(aSong);
-        myCoolPlaylist.add(aVideo);
-
-        myCoolPlaylist.playAll();
     }
 }
