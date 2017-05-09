@@ -18,7 +18,7 @@ class Tasks implements Comparable<Tasks>{
     @Override
     public int compareTo(Tasks o) {
 
-        if(this.title == o.title) {
+        if(!this.title.equals(o.title)) {
             return this.title.compareTo(o.title);
         }
         else{
